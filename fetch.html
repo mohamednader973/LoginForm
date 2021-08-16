@@ -1,0 +1,69 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form onsubmit="register(event)">
+        Password:<input type="text" id="passwordinput" /><br/>
+        Email:<input type="text" id="emailinput" /><br/>
+        <input type="submit" value="Register" />
+    </form>
+    <script>
+        async function register(e){
+            e.preventDefault();
+
+
+            //validation
+            if(emailinput.value==""){
+                alert("please enter email");
+                return;
+            }
+            else if (emailinput.value.length<8) {
+              alert("please enter correct email");
+              return;
+            }
+            else if (passwordinput.value.length<8) {
+              alert("password should contain more than 8 characters");
+              return;
+            }
+            // for(char of passwordinput.value){
+            //   var flag=false;
+            //   if(char==char.toUpperCase()){
+            //     flag=true;
+            //     break;
+            //   }
+            // }
+            // console.log(flag);
+            // if (!flag) {
+            //   alert("password should contain at least a capital letter");
+            //   return;
+            // }
+
+            //prepare body for request
+            let body={
+                email:emailinput.value,
+                password:passwordinput.value
+            }
+
+
+            //http request options
+            let httpRequestOptions = {
+                method:"post",
+                headers:{
+                    "content-type":"application/json"
+                },
+                body:JSON.stringify(body)
+            }
+
+            //send the http request
+            let res = await fetch("https://reqres.in/api/login",httpRequestOptions);
+            let resBody = await res.json();
+            console.log(resBody.token);
+            alert("you are logged in");
+        }
+    </script>
+</body>
+</html>
